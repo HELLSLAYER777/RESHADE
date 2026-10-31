@@ -1,0 +1,9 @@
+{
+  "id": "ramy.reshadebridge",
+  "name": "ReShade Bridge",
+  "version": "1.0.0",
+  "author": "Ramy",
+  "description": "Runs ReShade on the generated frames and makes its overlay work: Home over the game opens the ReShade overlay, Home again gives the game back.",
+  "entry": "ReShadeBridge.dll",
+  "minAppVersion": "1.0.4"
+}

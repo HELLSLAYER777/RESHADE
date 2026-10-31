@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- ReShade Bridge: a mod for MFG SUPER MOTION. "dotnet build -c Release" makes bin\Release\ReShadeBridge.zip: that zip is
+       what users add in App Mods -> Add mod. Same layout as the kit's template (ModKit\sdk is two folders up). -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <AssemblyName>ReShadeBridge</AssemblyName>
+    <RootNamespace>ReShadeBridge</RootNamespace>
+    <ModSdkPath Condition="'$(ModSdkPath)' == ''">$(MSBuildThisFileDirectory)..\..\sdk\MfgSuperMotion.ModSdk.dll</ModSdkPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- The app brings both of these: the mod uses them, it does not ship them. -->
+    <Reference Include="MfgSuperMotion.ModSdk">
+      <HintPath>$(ModSdkPath)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <PackageReference Include="Avalonia" Version="12.1.0" ExcludeAssets="runtime" />
+    <None Update="mod.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <!-- The zip users add: mod.json, the mod's dll (and its pdb, for readable errors in mods.log). -->
+  <Target Name="ModZip" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <ModZipFolder>$(IntermediateOutputPath)modzip\</ModZipFolder>
+    </PropertyGroup>
+    <RemoveDir Directories="$(ModZipFolder)" />
+    <Copy SourceFiles="$(OutDir)mod.json;$(OutDir)$(AssemblyName).dll;$(OutDir)$(AssemblyName).pdb" DestinationFolder="$(ModZipFolder)" ContinueOnError="true" />
+    <ZipDirectory SourceDirectory="$(ModZipFolder)" DestinationFile="$(MSBuildProjectDirectory)\bin\$(Configuration)\$(AssemblyName).zip" Overwrite="true" />
+    <Message Importance="high" Text="Mod: $(MSBuildProjectDirectory)\bin\$(Configuration)\$(AssemblyName).zip" />
+  </Target>
+</Project>
