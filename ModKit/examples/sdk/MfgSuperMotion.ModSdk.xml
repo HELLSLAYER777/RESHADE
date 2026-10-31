@@ -1,1 +1,133 @@
-
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MfgSuperMotion.ModSdk</name>
+    </assembly>
+    <members>
+        <member name="T:MfgSuperMotion.Mods.IMod">
+            <summary>A mod. The app creates the one public class that implements this (it needs a constructor without
+            arguments) and calls <see cref="M:MfgSuperMotion.Mods.IMod.Load(MfgSuperMotion.Mods.IModHost)"/> once, on the window's thread, after the main window is up.</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IMod.Load(MfgSuperMotion.Mods.IModHost)">
+            <summary>Set the mod up: add pages and controls, listen to the engine, change the look. Keep the host.</summary>
+        </member>
+        <member name="T:MfgSuperMotion.Mods.Pages">
+            <summary>The pages of the app a mod can add to with <see cref="M:MfgSuperMotion.Mods.IModHost.AddToPage(System.String,Avalonia.Controls.Control,System.Int32)"/>.</summary>
+        </member>
+        <member name="F:MfgSuperMotion.Mods.Pages.Display">
+            <summary>Super Motion - frame generation and its options (the first page).</summary>
+        </member>
+        <member name="F:MfgSuperMotion.Mods.Pages.Video">
+            <summary>Super Video.</summary>
+        </member>
+        <member name="F:MfgSuperMotion.Mods.Pages.Mods">
+            <summary>App Mods - the page that lists the mods.</summary>
+        </member>
+        <member name="F:MfgSuperMotion.Mods.Pages.Support">
+            <summary>Support the app.</summary>
+        </member>
+        <member name="F:MfgSuperMotion.Mods.Pages.Settings">
+            <summary>Settings.</summary>
+        </member>
+        <member name="F:MfgSuperMotion.Mods.Pages.Help">
+            <summary>Help.</summary>
+        </member>
+        <member name="T:MfgSuperMotion.Mods.ModPage">
+            <summary>A page of the mod's own: a button in the sidebar (under "More") and what it shows.</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.ModPage.Id">
+            <summary>The page's name for <see cref="M:MfgSuperMotion.Mods.IModHost.ShowPage(System.String)"/> and <see cref="M:MfgSuperMotion.Mods.IModHost.AddToPage(System.String,Avalonia.Controls.Control,System.Int32)"/> - the mod's id
+            is put before it ("&lt;mod id&gt;/&lt;Id&gt;"), so two mods never take the same one.</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.ModPage.Title">
+            <summary>The sidebar button's text.</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.ModPage.Icon">
+            <summary>The sidebar button's icon: path data in a 24 x 24 box, as Avalonia's Path.Data takes it (empty: a plain square).</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.ModPage.Content">
+            <summary>Makes what the page shows. Called once, the first time the page is opened.</summary>
+        </member>
+        <member name="T:MfgSuperMotion.Mods.IModHost">
+            <summary>The app, as a mod sees it. Everything is called on the window's thread unless it says otherwise.</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.IModHost.ModId">
+            <summary>The mod's id (mod.json "id").</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.IModHost.AppVersion">
+            <summary>The app's version, "1.0.4".</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.IModHost.Language">
+            <summary>The app's language: its code ("en", "ar", "fr" ...).</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.IModHost.RightToLeft">
+            <summary>The app's language is written right to left (Arabic, Persian, Hebrew, Urdu).</summary>
+        </member>
+        <member name="E:MfgSuperMotion.Mods.IModHost.LanguageChanged">
+            <summary>The app's language was changed (the new code).</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.IModHost.MainWindow">
+            <summary>The app's main window - its whole look and every control in it (Avalonia).</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.IModHost.ViewModel">
+            <summary>The app's own view model (MainViewModel) - every property and command the window binds to.</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.AddPage(MfgSuperMotion.Mods.ModPage)">
+            <summary>Add a page of the mod's own (a button in the sidebar under "More").</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.AddToPage(System.String,Avalonia.Controls.Control,System.Int32)">
+            <summary>Add a control at the end of one of the app's pages (<see cref="T:MfgSuperMotion.Mods.Pages"/>) or of a mod page ("&lt;mod id&gt;/&lt;page id&gt;").
+            Controls are kept in the order of <paramref name="order"/>, then in the order they came.</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.ShowPage(System.String)">
+            <summary>Open a page (<see cref="T:MfgSuperMotion.Mods.Pages"/> or a mod page).</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.IModHost.CurrentPage">
+            <summary>The page shown just now.</summary>
+        </member>
+        <member name="E:MfgSuperMotion.Mods.IModHost.PageChanged">
+            <summary>Another page was opened (its name).</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.IModHost.OptionNames">
+            <summary>The names of the options of the profile in use (as preferences.json has them: "Generator", "Mode", "Flow" ...).</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.GetOption(System.String)">
+            <summary>An option of the profile in use, as text ("2", "True", "35"); null for a name that is not one.</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.SetOption(System.String,System.String)">
+            <summary>Change an option of the profile in use (saved, shown, and sent to the engine when it runs, as a change by hand
+            would be). False when the name is not an option or the value does not fit it.</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.IModHost.IsMotionRunning">
+            <summary>Frame generation (the engine) is running.</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.ToggleMotion">
+            <summary>Start frame generation as START MOTION does (the user then picks the game), or stop it.</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.SendToEngine(System.String,System.String)">
+            <summary>Tell the running engine one of its options now ("key=value", as its start file has them - Engine\README.md).
+            Nothing happens when it is not running.</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.SetEngineStartOption(System.String,System.String)">
+            <summary>A line the engine gets in its start file each time it starts, after the app's own (the same key: the mod's wins).</summary>
+        </member>
+        <member name="E:MfgSuperMotion.Mods.IModHost.EngineLine">
+            <summary>Every line the engine writes ("@fps 60 240", "@state running" ...). Raised off the window's thread.</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.ReadFile(System.String)">
+            <summary>A file of the mod (beside mod.json, or in its zip), by its path inside the mod ("images/logo.png"); null when not there.</summary>
+        </member>
+        <member name="P:MfgSuperMotion.Mods.IModHost.DataFolder">
+            <summary>A folder the mod may keep its own files in (made for it).</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.Log(System.String)">
+            <summary>A line in the mods' log (%LOCALAPPDATA%\MFG SUPER MOTION\Mods\mods.log).</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.ShowMessage(System.String,System.String)">
+            <summary>A small window with a title, a text and OK, as the app's own "?" has.</summary>
+        </member>
+        <member name="M:MfgSuperMotion.Mods.IModHost.OpenUrl(System.String)">
+            <summary>Open a web address in the user's browser.</summary>
+        </member>
+    </members>
+</doc>
