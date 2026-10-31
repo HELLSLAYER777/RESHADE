@@ -1,1 +1,24 @@
+name: Build ReShade Bridge mod
 
+on:
+  push:
+    paths:
+      - "ModKit/**"
+      - ".github/workflows/build-reshade-mod.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Build the mod
+        run: dotnet build ModKit/examples/ReShadeBridge/ReShadeBridge.csproj -c Release
+      - name: Keep the zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: ReShadeBridge-mod
+          path: ModKit/examples/ReShadeBridge/bin/Release/ReShadeBridge.zip
